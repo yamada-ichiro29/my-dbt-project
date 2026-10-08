@@ -1,20 +1,35 @@
 WITH calendar as(
-    SELECT * FROM {{ ref('stg_calendar')}}
+    SELECT 
+     date,
+     year,
+     month,
+     day,
+     week,
+     weekend_flg
+    FROM {{ ref('stg_calendar')}}
 )
 ,
 employee as(
-    SELECT * FROM {{ ref('stg_employee')}}
+    SELECT 
+     emp_id,
+     name,
+     dept_id,
+     dept_name
+    FROM {{ ref('stg_employee')}}
 )
 
+-- 直積で日付データと従業員データの全ての組み合わせを出す
+
 SELECT
-      c."date",
-      c."year",
-      c."month",
-      c."day",
-      c."week",
-      e."emp_id",
-      e."name",
-      e."dept_id",
-      e."dept_name"
+      c.date,
+      c.year,
+      c.month,
+      c.day,
+      c.week,
+      c.weekend_flg,
+      e.emp_id,
+      e.name,
+      e.dept_id,
+      e.dept_name
 FROM calendar as c
 CROSS JOIN employee as e
